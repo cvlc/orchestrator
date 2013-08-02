@@ -8,7 +8,7 @@ can be considered in a pre-alpha or 'development' state.
 
 ...is currently non-existent, but running the orchestrator.rb file as a user on the management node and the unionize.rb file as root on the Docker node will start the software itself.
 
-To see how to run DNSMasq on both the Docker (internal) and external-facing nodes, refer to 'dnsmasq/setup-interfaces.sh' for a single node example.   
+To see how to run DNSMasq on both the Docker (internal) and external-facing nodes, refer to 'dnsmasq/setup-interfaces.sh' for a single node example. Be sure to read 'Notes' below.
 
 ## Current Objectives
 
@@ -28,3 +28,5 @@ To see how to run DNSMasq on both the Docker (internal) and external-facing node
 * For DHCP to work on Docker containers, the base image and command combination used must start a DHCP client and request an IPv6 address via eth1 (from the container's perspective)
 
 * Unionize.rb is a modified version of unionize.sh, a versatile networking script for Docker written by Jerome Petazzoni (jpetazzo). J. Petazzoni has also contributed to an OpenStack backend for Docker (dotcloud/openstack-docker). 
+
+* The program is assumed to reside within /home/$USER/orchestrator. If this is not the case, paths in many of the bash scripts and settings files will have to be adjusted.
