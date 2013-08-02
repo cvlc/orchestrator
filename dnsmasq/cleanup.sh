@@ -1,7 +1,8 @@
 #!/bin/bash
+# This can be used to kill any running DNSMasq and remove lease files.
 killall dnsmasq
-echo>/home/calum/orchestrator/dnsmasq/ext-staticaddr
-echo>/home/calum/orchestrator/dnsmasq/int-staticaddr
+echo>`pwd`/ext-staticaddr
+echo>`pwd`/int-staticaddr
 rm /tmp/internal.leases
 rm /tmp/external.leases
 
