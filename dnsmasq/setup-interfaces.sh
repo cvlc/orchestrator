@@ -17,8 +17,8 @@ ip addr add 10.6.6.1/24 dev br1
 
 # Both internal-dhcp.sh and external-dhcp.sh need to be modified with the settings from Orchestrator.
 
-dnsmasq -d --bind-dynamic --listen-address "fd39:9706:2786:6333::1" --dhcp-hostsfile="/home/$USER/orchestrator/dnsmasq/int-staticaddr" -C "/home/calum/orchestrator/dnsmasq/dnsmasq-internal.conf" --dhcp-script="/home/$USER/orchestrator/dnsmasq/internal-dhcp.sh" 2>&1 > internal-log &
+dnsmasq -d --bind-dynamic --listen-address "fd39:9706:2786:6333::1" --dhcp-hostsfile="/home/$USER/orchestrator/dnsmasq/int-staticaddr" -C "/home/$USER/orchestrator/dnsmasq/dnsmasq-internal.conf" --dhcp-script="/home/$USER/orchestrator/dnsmasq/internal-dhcp.sh" 2>&1 > internal-log &
 
-dnsmasq -d --bind-dynamic --listen-address "fd39:9709:2766:6555::1"  --dhcp-hostsfile="/home/$USER/orchestrator/dnsmasq/ext-staticaddr" -C "/home/calum/orchestrator/dnsmasq/dnsmasq-external.conf" --dhcp-script="/home/$USER/orchestrator/dnsmasq/external-dhcp.sh" 2>&1 > external-log &
+dnsmasq -d --bind-dynamic --listen-address "fd39:9709:2766:6555::1"  --dhcp-hostsfile="/home/$USER/orchestrator/dnsmasq/ext-staticaddr" -C "/home/$USER/orchestrator/dnsmasq/dnsmasq-external.conf" --dhcp-script="/home/$USER/orchestrator/dnsmasq/external-dhcp.sh" 2>&1 > external-log &
 
 #hostapd /etc/hostapd/DemoAP.conf &
