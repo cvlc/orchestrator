@@ -1,6 +1,6 @@
 #!/bin/bash
-
-DIR="/home/calum/orchestrator/dnsmasq"
+# These should be adjusted to reflect orchestrator's settings.cfg.
+DIR="/home/$USER/orchestrator/dnsmasq"
 HOST="localhost"
 PORT="8998"
 ADDRESS="fd39:9709:2766:6555::1"
