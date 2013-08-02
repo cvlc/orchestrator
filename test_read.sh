@@ -1,3 +1,5 @@
+#!/bin/bash
+# This script is useful for quickly listing all the components that Orchestrator is keeping track of.
 echo "Instance list:"
 INSTANCE_LIST=$(curl -s -k https://127.0.0.1:8998/instance 2>/dev/null)
 echo $INSTANCE_LIST
