@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script will introduce some example data to Orchestrator, testing data read/write/deletion operations.
 echo "Creating Cloud service..."
 SERVICE_ID=$(curl -s -k --data "service_address=ffff:ffff:ffff:ffff" https://127.0.0.1:8998/cloud/add 2>/dev/null)
 SERVICE_ID2=$(curl -s -k "https://127.0.0.1:8998/cloud/ffff:ffff:ffff:ffff" 2>/dev/null)
