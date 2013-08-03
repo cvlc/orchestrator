@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-$iter = 0
 require_relative './environment'
 
 def unionize(container_id, secret_recv)
