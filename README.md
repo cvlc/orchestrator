@@ -27,6 +27,6 @@ To see how to run DNSMasq on both the Docker (internal) and external-facing node
 
 * For DHCP to work on Docker containers, the base image and command combination used must start a DHCP client and request an IPv6 address via eth1 (from the container's perspective)
 
-* Unionize.rb is a modified version of unionize.sh, a versatile networking script for Docker written by Jerome Petazzoni (jpetazzo). J. Petazzoni has also contributed to an OpenStack backend for Docker (dotcloud/openstack-docker). 
+* Unionize.rb is a modified version of unionize.sh, a versatile networking script for Docker written by Jérôme Petazzoni (jpetazzo), who has also contributed to an excellent OpenStack backend for Docker (dotcloud/openstack-docker). 
 
 * The program is assumed to reside within /home/$USER/orchestrator. If this is not the case, paths in many of the bash scripts and settings files will have to be adjusted.
