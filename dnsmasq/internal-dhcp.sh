@@ -19,6 +19,9 @@ if [[ "$1" == "add" ]]; then
         echo $ADDINSTANCE
         EXISTS=$(grep "$2" "$DIR/int-staticaddr")
         if [[ "$EXISTS" == '' ]]; then
+	    if [ ! -e $DIR/int-staticaddr ]; then touch 
+$DIR/int-staticaddr; 
+fi
             echo "id:$2,[$3]" >> "$DIR/int-staticaddr"
             CHANGED="1"
         fi
@@ -40,6 +43,8 @@ if [[ $1 == "del" ]]; then
         echo $DELINSTANCE
         EXISTS=$(grep --quiet "$2" "$DIR/int-staticaddr")
         if $EXISTS; then
+	    if [ ! -e $DIR/int-staticaddr ]; then touch 
+$DIR/int-staticaddr; fi
             sed -i "/$3/d" "$DIR/int-staticaddr"
             CHANGED="1"
         fi

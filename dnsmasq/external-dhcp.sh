@@ -20,6 +20,7 @@ if [[ "$1" == "add" ]]; then
         echo "$CLIENT_ID assigned Docker container $CONTAINER_IP"
         EXISTS=$(grep "$2" "$DIR/ext-staticaddr")
         if [[ "$EXISTS" == '' ]]; then
+            if [ ! -e $DIR/ext-staticaddr ]; then touch $DIR/ext-staticaddr; fi
             echo "id:$2,[$3]" >> "$DIR/ext-staticaddr"
             CHANGED="1"
         fi
@@ -41,6 +42,7 @@ if [[ $1 == "del" ]]; then
         echo $delclient
         EXISTS=$(grep --quiet "$2" "$DIR/ext-staticaddr")
         if $EXITS; then
+            if [ ! -e $DIR/ext-staticaddr ]; then touch $DIR/ext-staticaddr; fi
             sed -i "/$3/d" "$DIR/int-staticaddr"
             CHANGED="1"
         fi
