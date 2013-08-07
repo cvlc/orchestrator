@@ -11,8 +11,8 @@ def unionize(container_id, secret_recv)
         random_unsanitized = `echo $RANDOM`
         
         cgroup = cgroup_unsanitized.chomp.strip # TODO: Further sanitization and below
-        
-        nspid_unsanitized = `head -n 1 "#{cgroup}/#{container_id}/tasks"`
+        p "Finding PID..."
+        nspid_unsanitized = `head -n 1 "#{cgroup}/#{container_id}/tasks"` until nspid_unsanitized != nil
         
         nspid = nspid_unsanitized.chomp.strip
         random = random_unsanitized.chomp.strip
