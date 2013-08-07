@@ -20,7 +20,7 @@ ip link set br0 up
 ip addr add "$BRIDGE0" dev br0
 
 ip link set br1 up
-ip addr add "BRIDGE1" dev br1
+ip addr add "$BRIDGE1" dev br1
 
 # IPv4 addresses are not required but may be useful for external devices.
 # ip addr add 10.6.6.1/24 dev br1
