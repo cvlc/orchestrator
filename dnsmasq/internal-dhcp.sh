@@ -3,6 +3,7 @@
 DIR="/home/$USER/orchestrator/dnsmasq"
 HOST="localhost"
 PORT="8998"
+CHANGED="0"
 ADDRESS="fd39:9706:2786:6333::1"
 SERVER_ID=$(/usr/bin/curl -s -k "https://$HOST:$PORT/cloud/$ADDRESS")
 
@@ -19,6 +20,7 @@ if [[ "$1" == "add" ]]; then
         EXISTS=$(grep "$2" "$DIR/int-staticaddr")
         if [[ "$EXISTS" == '' ]]; then
             echo "id:$2,[$3]" >> "$DIR/int-staticaddr"
+            CHANGED="1"
         fi
     fi
 fi
@@ -39,9 +41,11 @@ if [[ $1 == "del" ]]; then
         EXISTS=$(grep --quiet "$2" "$DIR/int-staticaddr")
         if $EXISTS; then
             sed -i "/$3/d" "$DIR/int-staticaddr"
+            CHANGED="1"
         fi
     fi
 fi
 
-
+if [[ "$CHANGED" == "1" ]]; then
 /usr/bin/ps aux | awk '/[d]nsmasq-internal/{print $2}' | xargs kill -HUP
+fi
