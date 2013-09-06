@@ -1,8 +1,16 @@
-## Orchestrator v0.1
-
-Orchestrator is a modular backend framework for supplying automated provisioning of virtual resources for physical devices using stateful DHCPv6. Currently it
-supports the DNSMasq DHCPv6 server and Docker.io for the provision of virtual resources. This is a very early build of the application, it will contain bugs and
+# Orchestrator v0.1
+## Introduction
+Orchestrator is a modular, extensible backend framework for automated provisioning of virtual resources for IPv6 clients using stateful DHCPv6. Currently it
+supports the DNSMasq DHCPv6 server and Docker.io for the provision of virtual instances. This is a very early build of the application, it will contain bugs and
 can be considered in a pre-alpha or 'development' state. 
+
+## Requirements
+* [Ruby 1.9](https://github.com/ruby/ruby)
+* [ParseConfig](https://github.com/derks/ruby-parseconfig)
+* [Sequel](https://github.com/jeremyevans/sequel/)
+* [Sinatra](https://github.com/sinatra/sinatra/)
+* [docker-api](https://github.com/swipely/docker-api)
+* [facets](https://github.com/rubyworks/facets/)
 
 ## Documentation
 
