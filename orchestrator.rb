@@ -4,7 +4,6 @@ require 'webrick'
 require 'webrick/https'
 require 'openssl'
 require 'sinatra/json'
-require 'sequel'
 require './lib/environment.rb'
 
 if $config['sql']['enabled'] == "true"
