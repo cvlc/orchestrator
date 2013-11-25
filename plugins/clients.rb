@@ -79,7 +79,7 @@ module Client
 
           p self
           if @old == 0
-              Database::Client.new(self)
+              Database::Client.new(self) if $sql
           end
         else
           p "Invalid request - client already known!"
@@ -89,22 +89,22 @@ module Client
     def on()
         if @state != 1
             @state = 1
-            Database::Client.find(self).update(:state => 1)
+            Database::Client.find(self).update(:state => 1) if $sql
         end
     end
 
     def adopt(child)
        @children << child
-       Database::ClientInstance.map(self, child)
+       Database::ClientInstance.map(self, child) if $sql
     end
 
     def disown(child)
         @children.delete(child)
-        Database::ClientInstance.rm(self, child)
+        Database::ClientInstance.rm(self, child) if $sql
     end
   
     def rm()
-        Database::Client.rm(self)
+        Database::Client.rm(self) if $sql
         @id = nil
         @client_address = nil
         @client_duid = nil
