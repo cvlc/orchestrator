@@ -12,7 +12,6 @@ can be considered in a pre-alpha or 'development' state.
 * [Sinatra-contrib](http://www.sinatrarb.com/contrib/)
 * [docker-api](https://github.com/swipely/docker-api)
 * [facets](https://github.com/rubyworks/facets/)
-
 * [docker](http://www.docker.io)
 * [dnsmasq](http://www.thekelleys.org.uk/dnsmasq)
 * [dhcpcd](http://roy.marples.name/projects/dhcpcd)
