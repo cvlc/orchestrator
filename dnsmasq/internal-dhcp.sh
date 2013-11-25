@@ -1,6 +1,6 @@
 #!/bin/bash
 # These should be adjusted to reflect the plugin helper's settings.cfg.
-DIR="/home/$USER/orchestrator/dnsmasq"
+DIR="/opt/orchestrator/dnsmasq"
 HOST="localhost"
 PORT="8998"
 CHANGED="0"

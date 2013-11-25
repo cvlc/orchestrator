@@ -3,7 +3,7 @@
 
 BRIDGE0="fd39:9706:2786:6333::1/64"
 BRIDGE1="fd39:9709:2766:6555::1/64"
-LOCATION="/home/$USER/orchestrator/dnsmasq"
+LOCATION="/opt/orchestrator/dnsmasq"
 
 # Docker bridge (internal)
 brctl addbr br0
