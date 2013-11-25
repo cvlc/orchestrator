@@ -1,4 +1,4 @@
-# Orchestrator v0.1
+# Orchestrator v0.2
 ## Introduction
 Orchestrator is a modular, extensible backend framework for automated provisioning of virtual resources for IPv6 clients using stateful DHCPv6. Currently it
 supports the DNSMasq DHCPv6 server and Docker.io for the provision of virtual instances. This is a very early build of the application, it will contain bugs and
@@ -7,7 +7,6 @@ can be considered in a pre-alpha or 'development' state.
 ## Requirements
 * [Ruby 2.0.0](https://github.com/ruby/ruby)
 * [ParseConfig](https://github.com/derks/ruby-parseconfig)
-* [Sequel](https://github.com/jeremyevans/sequel/)
 * [Sinatra](https://github.com/sinatra/sinatra/)
 * [Sinatra-contrib](http://www.sinatrarb.com/contrib/)
 * [docker-api](https://github.com/swipely/docker-api)
@@ -16,11 +15,119 @@ can be considered in a pre-alpha or 'development' state.
 * [dnsmasq](http://www.thekelleys.org.uk/dnsmasq)
 * [dhcpcd](http://roy.marples.name/projects/dhcpcd)
 
+## Optional
+* [Sequel](https://github.com/jeremyevans/sequel/) and your SQLd of choice
+
 ## Documentation
 
-...is currently non-existent, but running the orchestrator.rb file as a user on the management node and the unionize.rb file as root on the Docker node will start the software itself.
+There are three primary components to the service:
 
-To see how to run DNSMasq on both the Docker (internal) and external-facing nodes, refer to 'dnsmasq/setup-interfaces.sh' for a single node example. Be sure to read 'Notes' below.
+1. DNSMasq configurations and bash scripts (./dnsmasq)
+
+2. unionize.rb with pipework (./docker)
+
+3. orchestrator.rb and plugins (.)
+
+### STEP 1 - DHCPv6:
+
+To deploy Orchestrator, begin by configuring two bridge devices - the first bridge (br0 in the provided example configuration) connects client devices to the host running orchestrator.rb,
+this can be logical or physical. The second bridge (br1) will be a logical device used to network Docker containers and should reside on the Docker host. Additionally, ensure that IPv6 forwarding is enabled on both hosts.
+
+```
+[user@orchestrator /opt]$ git clone https://github.com/cvlc/orchestrator.git
+$ cd orchestrator
+$ sudo sysctl -w net.ipv6.conf.all.forwarding=1
+$ sudo brctl addbr br0
+$ sudo brctl setfd br0 0
+$ sudo brctl addif br0 eth0
+$ ip link set eth0 up
+$ ip link set br0 up
+$ ip -6 addr add fd39:9706:2786:6333::1/64 dev br0
+```
+
+```
+[user@docker /opt]$ git clone https://github.com/cvlc/orchestrator.git
+$ cd orchestrator/docker
+$ sudo sysctl -w net.ipv6.conf.all.forwarding=1
+$ sudo brctl addbr br1
+$ sudo brctl setfd br1 0
+$ ip link set br1 up
+$ ip -6 addr add fd39:9709:2766:6555::1/64 dev br1
+```
+
+NOTE: Use your own IPv6 subnets or generate some [unique ULAs](https://www.ultratools.com/tools/rangeGenerator)!
+
+Next, configure internal-dhcp.sh and dnsmasq-internal.conf on the orchestrator host and the 'external' counterparts on the docker host. Note that HOST and PORT in both DNSMasq scripts refer to the orchestrator node only. ADDRESS, however, should be the correct IPv6 address for each bridge. In the above dual-node configuration, the internal script would have a 'HOST' of 'localhost' and the external script would have 'HOST' set to "fd39:9706:2786:6333::1", presuming that this address is routed and reachable from the docker node.
+
+Once the addresses are correctly configured, start DNSMasq on both hosts:
+```
+$ screen -S dnsmasq
+$ cd /opt/orchestrator/dnsmasq
+[user@orchestrator dnsmasq]$ sudo dnsmasq -d --bind-dynamic --listen-address "fd39:9706:2786:6333::1" --dhcp-hostsfile="/opt/orchestrator/dnsmasq/int-staticaddr" -C "/opt/orchestrator/dnsmasq/dnsmasq-internal.conf" --dhcp-script="/opt/orchestrator/dnsmasq/internal-dhcp.sh"
+# CTRL+a then d to detach from screen
+```
+```
+screen -S dnsmasq
+cd /opt/orchestrator/dnsmasq
+[user@docker dnsmasq]$ dnsmasq -d --bind-dynamic --listen-address "fd39:9709:2766:6555::1" --dhcp-hostsfile=/opt/orchestrator/dnsmasq/ext-staticaddr" -C "/opt/orchestrator/dnsmasq/dnsmasq-external.conf" --dhcp-script="/opt/orchestrator/dnsmasq/external-dhcp.sh"
+# CTRL+a then d to detach from screen
+```
+
+### STEP 2 - Unionize.rb with Docker:
+
+The next module to configure is unionize.rb - this should be conducted on the docker host, on which the docker daemon is installed and running. Note that Docker should be listening on a network port. Check the output of `netstat -pant` on the docker host to verify the address/port that docker is listening on and configure docker/settings.cfg accordingly. If this is a multi-node deployment, ensure that a public address is set under [web] in settings.cfg so the orchestrator can connect to unionize.rb. Finally, change the 'shared secret' to something truly secret (the output of `pwgen -s 32 1` should suffice - keep a copy of this for the next step) and [generate a private key and certificate](http://www.akadia.com/services/ssh_test_certificate.html).
+
+Before we can utilize pipework, we need to clone the submodule - navigate to the docker directory and update the pipework submodule.
+
+```
+[user@docker dnsmasq]$ cd ../docker
+$ vim settings.cfg
+# Modify configuration as appropriate
+$ git submodule init
+$ git submodule update
+$ ls pipework
+LICENSE   README.md   pipework
+```
+
+If you don't have a custom Docker image prepared already, take this opportunity to build the provided Dockerfile. This will provide a very basic container with SSH access and a default nginx configuration. Be sure to replace the public key in the Dockerfile with your own!
+
+```
+[user@docker docker]$ cd client
+$ vim Dockerfile
+# Replace public key with your own or a newly created one (ssh-keygen)
+$ docker build -t orchestrator/client .
+# Wait for docker to finish building the image
+$ cd ..
+```
+
+Finally, we can start unionize.rb on the Docker host:
+
+```
+[user@docker docker]$ screen -S unionize
+$ ruby unionize.rb
+```
+
+This command should provide various debugging information concerning the certificate then display a similar message to '[2013-10-10 10:00:00] INFO WEBrick::HTTPServer#start: pid=1234 port=8897'. If this is not the case, re-verify your configuration.
+
+### STEP 3 - Orchestrator:
+
+Move back to the Orchestrator host. Copy over the certificate, private key and secret string from the Docker host and apply them to orchestrator/settings.cfg (not docker/settings.cfg!) on the orchestrator host. Ensure that a public IP address is set for 'address' under '[web]' and that the docker host's IP ('helper_address') is set correctly under '[docker]'. If SQL is desired, ensure that the 'sequel' gem is installed, that 'enabled' and 'init' under '[sql]' are 'true' (remember to change 'init' to 'false' after the first execution if persistance is desired!) and set the connection string accordingly. The database must exist, but the tables will be created automatically if 'init' is 'true'. 
+
+```
+[user@orchestrator orchestrator]$ vim settings.cfg
+# Configure as appropriate
+```
+
+Once orchestrator is configured, it's time to complete the installation! Simply execute orchestrator.
+
+```
+[user@orchestrator orchestrator]$ screen -S orchestrator
+$ ruby orchestrator.rb
+```
+
+Output should be similar to that given by unionize.rb - if the application immediately exists, re-check the configuration files. 
+
+To see orchestrator in action, simply connect a client (see dnsmasq/vm.sh for an example with QEMU, install Debian and a DHCP client to debian.qcow2 and start the script multiple times for multiple virtual clients) and wait for notification of a newly started Docker container from DNSMasq, orchestrator or unionize.rb. 
 
 ## Current Objectives
 
