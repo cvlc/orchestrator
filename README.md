@@ -25,16 +25,16 @@ To see how to run DNSMasq on both the Docker (internal) and external-facing node
 
 ## Current Objectives
 
-[ ] Refactoring/debugging so everything works consistently
-[ ] Documentation
-[ ] Database persistence (currently half-implemented)
-[ ] Proper Ruby packaging
+* Refactoring/debugging so everything works consistently
+* Documentation
+* Database persistence (currently half-implemented)
+* Proper Ruby packaging
 
 ## Future Goals 
 
-[ ] Additional plugins for a mix of DHCPv6/Cloud providers
-[ ] OpenStack integration
-[ ] More networking/firewall options (eg. complex backend networks of containers for each client)
+* Additional plugins for a mix of DHCPv6/Cloud providers
+* OpenStack integration
+* More networking/firewall options (eg. complex backend networks of containers for each client)
 
 ## Notes
 
