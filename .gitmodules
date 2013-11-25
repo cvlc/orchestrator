@@ -1,0 +1,3 @@
+[submodule "docker/pipework"]
+	path = docker/pipework
+	url = https://github.com/cvlc/pipework.git
