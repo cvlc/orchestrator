@@ -145,6 +145,6 @@ To see orchestrator in action, simply connect a client (see dnsmasq/vm.sh for an
 
 * An example Dockerfile is included in ./docker/client - you can 'docker build -t orchestrator/client .' in this directory to create the 'orchestrator/client' docker image for testing, it will provide an SSH server and default nginx installation. Be sure to replace the included pubkey with your own!
 
-* Unionize.rb is a Ruby+Sinatra DSL wrapper to Pipework, a versatile networking script for Docker written by Jérôme Petazzoni (jpetazzo), who has also contributed to an excellent OpenStack backend for Docker (dotcloud/openstack-docker). Be sure to 'git submodule init' and 'git submodule update' to get the latest forked version of pipework. 
+* Unionize.rb is a Ruby+Sinatra DSL wrapper to Pipework, a versatile networking script for Docker written by Jérôme Petazzoni ([jpetazzo](https://github.com/jpetazzo)), who has also contributed to an excellent OpenStack backend for Docker (dotcloud/openstack-docker). Be sure to 'git submodule init' and 'git submodule update' to get the latest forked version of pipework. 
 
 * The directory is assumed to reside at (or should be softlinked to) /opt/orchestrator. If this is not the case, paths in many of the bash scripts and settings files will have to be adjusted.
