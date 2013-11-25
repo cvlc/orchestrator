@@ -48,9 +48,9 @@ $ sudo sysctl -w net.ipv6.conf.all.forwarding=1
 $ sudo brctl addbr br0
 $ sudo brctl setfd br0 0
 $ sudo brctl addif br0 eth0
-$ ip link set eth0 up
-$ ip link set br0 up
-$ ip -6 addr add fd39:9706:2786:6333::1/64 dev br0
+$ sudo ip link set eth0 up
+$ sudo ip link set br0 up
+$ sudo ip -6 addr add fd39:9706:2786:6333::1/64 dev br0
 ```
 
 ```
@@ -59,8 +59,8 @@ $ cd orchestrator/docker
 $ sudo sysctl -w net.ipv6.conf.all.forwarding=1
 $ sudo brctl addbr br1
 $ sudo brctl setfd br1 0
-$ ip link set br1 up
-$ ip -6 addr add fd39:9709:2766:6555::1/64 dev br1
+$ sudo ip link set br1 up
+$ sudo ip -6 addr add fd39:9709:2766:6555::1/64 dev br1
 ```
 
 NOTE: Use your own IPv6 subnets or generate some [unique ULAs](https://www.ultratools.com/tools/rangeGenerator)!
@@ -77,7 +77,7 @@ $ cd /opt/orchestrator/dnsmasq
 ```
 screen -S dnsmasq
 cd /opt/orchestrator/dnsmasq
-[user@docker dnsmasq]$ dnsmasq -d --bind-dynamic --listen-address "fd39:9709:2766:6555::1" --dhcp-hostsfile=/opt/orchestrator/dnsmasq/ext-staticaddr" -C "/opt/orchestrator/dnsmasq/dnsmasq-external.conf" --dhcp-script="/opt/orchestrator/dnsmasq/external-dhcp.sh"
+[user@docker dnsmasq]$ sudo dnsmasq -d --bind-dynamic --listen-address "fd39:9709:2766:6555::1" --dhcp-hostsfile=/opt/orchestrator/dnsmasq/ext-staticaddr" -C "/opt/orchestrator/dnsmasq/dnsmasq-external.conf" --dhcp-script="/opt/orchestrator/dnsmasq/external-dhcp.sh"
 # CTRL+a then d to detach from screen
 ```
 
@@ -108,7 +108,7 @@ $ docker build -t orchestrator/client .
 $ cd ..
 ```
 
-Finally, we can start unionize.rb on the Docker host:
+Finally, we can start unionize.rb on the Docker host. Be sure that either the user running unionize.rb has sudo permissions without providing a password or you'll have to run unionize.rb as root:
 
 ```
 [user@docker docker]$ screen -S unionize
