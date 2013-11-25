@@ -6,7 +6,7 @@ FROM ubuntu
 ADD https://raw.github.com/cvlc/pipework/master/pipework /usr/bin/pipework
 RUN mkdir /var/run/sshd
 RUN echo 'deb http://archive.ubuntu.com/ubuntu precise main restricted universe' > /etc/apt/sources.list 
-RUN echo '#!/bin/bash\nip link set lo up\n/usr/bin/pipework --wait\n/usr/sbin/sshd &\n/usr/bin/nginx -c /etc/nginx/nginx.conf' >> /usr/bin/startscript
+RUN echo '#!/bin/bash\nip link set lo up\n/usr/bin/pipework --wait\n/usr/sbin/sshd &\n/usr/sbin/nginx -c /etc/nginx/nginx.conf' >> /usr/bin/startscript
 RUN chmod +x /usr/bin/pipework /usr/bin/startscript
 RUN apt-get -y update
 RUN apt-get -y install nginx openssh-server
