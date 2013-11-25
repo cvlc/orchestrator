@@ -4,6 +4,14 @@ Orchestrator is a modular, extensible backend framework for automated provisioni
 supports the DNSMasq DHCPv6 server and Docker.io for the provision of virtual instances. This is a very early build of the application, it will contain bugs and
 can be considered in a pre-alpha or 'development' state. 
 
+## Possible Use cases
+* Snapchat-like document or code sharing via web applications and container self-destruct timers
+* Interactive demonstrations for hackerspaces and conferences - a user can personalize their own instance of your application, you could even export the resulting image and send it to them after!
+* Automated server resource assignment for a personal cloud or [Internet of Things](http://resin.io/docker-on-raspberry-pi/)
+* A fully destructable-on-demand personal [VPN](https://github.com/jpetazzo/dockvpn) for every client!
+
+And many, many more!
+
 ## Requirements
 * [Ruby 2.0.0](https://github.com/ruby/ruby)
 * [ParseConfig](https://github.com/derks/ruby-parseconfig)
