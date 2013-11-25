@@ -131,9 +131,8 @@ To see orchestrator in action, simply connect a client (see dnsmasq/vm.sh for an
 
 ## Current Objectives
 
-* Refactoring/debugging so everything works consistently
-* Documentation
-* Database persistence (currently half-implemented)
+* Refactoring/debugging to make the code nicer
+* Database persistence (currently missing for Docker plugin)
 * Proper Ruby packaging
 
 ## Future Goals 
