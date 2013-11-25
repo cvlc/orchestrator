@@ -44,6 +44,8 @@ this can be logical or physical. The second bridge (br1) will be a logical devic
 ```
 [user@orchestrator /opt]$ git clone https://github.com/cvlc/orchestrator.git
 $ cd orchestrator
+$ bundle install
+# Wait for the gems to install
 $ sudo sysctl -w net.ipv6.conf.all.forwarding=1
 $ sudo brctl addbr br0
 $ sudo brctl setfd br0 0
@@ -55,7 +57,10 @@ $ sudo ip -6 addr add fd39:9706:2786:6333::1/64 dev br0
 
 ```
 [user@docker /opt]$ git clone https://github.com/cvlc/orchestrator.git
-$ cd orchestrator/docker
+$ cd orchestrator
+$ bundle install
+# Wait for the gems to install
+$ cd docker
 $ sudo sysctl -w net.ipv6.conf.all.forwarding=1
 $ sudo brctl addbr br1
 $ sudo brctl setfd br1 0
@@ -112,7 +117,7 @@ Finally, we can start unionize.rb on the Docker host. Be sure that either the us
 
 ```
 [user@docker docker]$ screen -S unionize
-$ ruby unionize.rb
+$ bundle exec ruby unionize.rb
 ```
 
 This command should provide various debugging information concerning the certificate then display a similar message to '[2013-10-10 10:00:00] INFO WEBrick::HTTPServer#start: pid=1234 port=8897'. If this is not the case, re-verify your configuration.
@@ -130,7 +135,7 @@ Once orchestrator is configured, it's time to complete the installation! Simply 
 
 ```
 [user@orchestrator orchestrator]$ screen -S orchestrator
-$ ruby orchestrator.rb
+$ bundle exec ruby orchestrator.rb
 ```
 
 Output should be similar to that given by unionize.rb - if the application immediately exists, re-check the configuration files. 
