@@ -24,7 +24,7 @@ And many, many more!
 * [dhcpcd](http://roy.marples.name/projects/dhcpcd)
 
 ## Optional
-* [Sequel](https://github.com/jeremyevans/sequel/) and your SQLd of choice
+* [Sequel](https://github.com/jeremyevans/sequel/) and your SQLd and adapter gem of choice (eg. [mysql2](https://github.com/brianmario/mysql2) for MariaDB/MySQL)
 
 ## Documentation
 
